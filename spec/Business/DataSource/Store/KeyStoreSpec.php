@@ -4,26 +4,18 @@ namespace spec\DigitalClosuxe\Business\DataSource\Store;
 
 use PhpSpec\ObjectBehavior;
 use DigitalClosuxe\Business\DataSource\Store\KeyStore;
+use DigitalClosuxe\Business\DataSource\Concern\KeyStorePropertyValues;
 
 /**
  * Class KeyStoreSpec
  */
 class KeyStoreSpec extends ObjectBehavior
 {
-    /**
-     * Test values for this KeyStore test case
-     */
-    const PROPERTY_VALUES = [
-        'example_key',
-        'Value for example_key field'
-    ];
+    use KeyStorePropertyValues;
 
     function let()
     {
-        $this->beConstructedWith([
-            'fieldKey' => self::PROPERTY_VALUES[0],
-            'fieldValue' => self::PROPERTY_VALUES[1]
-        ]);
+        $this->beConstructedWith($this->propertyKeys());
     }
 
     function it_is_initializable()
@@ -36,13 +28,17 @@ class KeyStoreSpec extends ObjectBehavior
         $this->getGuuid()->shouldBeString();
     }
 
-    function it_has_field_key_name()
+    function it_has_field_key_value()
     {
-        $this->getFieldKey()->shouldBe(self::PROPERTY_VALUES[0]);
+        $this->getFieldKey()->shouldBe(
+            $this->getFieldKeyValue()
+        );
     }
 
-    function it_has_field_value_value()
+    function it_has_field_key_value_value()
     {
-        $this->getFieldValue()->shouldBe(self::PROPERTY_VALUES[1]);
+        $this->getFieldValue()->shouldBe(
+            $this->getFieldKeyValueValue()
+        );
     }
 }

@@ -5,19 +5,14 @@ namespace DigitalClosuxe\Tests\Unit\Business\DataSource\Store {
     use PHPUnit\Framework\TestCase;
     use DigitalClosuxe\Business\DataSource\Store\KeyStore;
     use DigitalClosuxe\Business\DataSource\Contract\KeyStoreDataset;
+    use DigitalClosuxe\Business\DataSource\Concern\KeyStorePropertyValues;
 
     /**
      * Class KeyStoreTest
      */
     class KeyStoreTest extends TestCase
     {
-        /**
-         * Test values for this KeyStore test case
-         */
-        const PROPERTY_VALUES = [
-            'example_key',
-            'Value for example_key field'
-        ];
+        use KeyStorePropertyValues;
 
         /**
          * @test
@@ -25,8 +20,8 @@ namespace DigitalClosuxe\Tests\Unit\Business\DataSource\Store {
          */
         public function it_sets_keystore_record_properties_with_their_values($keyStore)
         {
-            self::assertSame(self::PROPERTY_VALUES[0], $keyStore->fieldKey);
-            self::assertSame(self::PROPERTY_VALUES[1], $keyStore->fieldValue);
+            self::assertSame($this->getFieldKeyValue(), $keyStore->fieldKey);
+            self::assertSame($this->getFieldKeyValueValue(), $keyStore->fieldValue);
         }
 
         /**
@@ -64,8 +59,8 @@ namespace DigitalClosuxe\Tests\Unit\Business\DataSource\Store {
          */
         public function it_has_keystore_dataset_get_methods($keyStore)
         {
-            self::assertSame(self::PROPERTY_VALUES[0], $keyStore->getFieldKey());
-            self::assertSame(self::PROPERTY_VALUES[1], $keyStore->getFieldValue());
+            self::assertSame($this->getFieldKeyValue(), $keyStore->getFieldKey());
+            self::assertSame($this->getFieldKeyValueValue(), $keyStore->getFieldValue());
         }
 
         /**
@@ -75,12 +70,7 @@ namespace DigitalClosuxe\Tests\Unit\Business\DataSource\Store {
          */
         public function keyStoreProvider()
         {
-            $keyStore = new KeyStore([
-                'fieldKey' => self::PROPERTY_VALUES[0],
-                'fieldValue' => self::PROPERTY_VALUES[1]
-            ]);
-
-            return [[$keyStore]];
+            return [[new KeyStore($this->propertyKeys())]];
         }
     }
 }
